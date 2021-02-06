@@ -15,6 +15,7 @@ import com.nimbusds.oauth2.sdk.token.Tokens;
 import com.nimbusds.openid.connect.sdk.OIDCTokenResponse;
 import com.nimbusds.openid.connect.sdk.OIDCTokenResponseParser;
 import com.nimbusds.openid.connect.sdk.token.OIDCTokens;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 public class OidcDriver extends Oauth2Driver {
-
-    private static final Logger log = LoggerFactory.getLogger(OidcDriver.class);
 
     public OidcDriver(LoginProviderSettings settings, URI callbackURI) {
         super(settings, callbackURI);
@@ -34,7 +34,7 @@ public class OidcDriver extends Oauth2Driver {
     @Override
     public List<String> getSettingsErrors(LoginProviderSettings settings) {
 
-        var errors = super.getSettingsErrors(settings);
+        List<String> errors = super.getSettingsErrors(settings);
 
         if (errors.isEmpty()) {
             if (!getScopes(settings).contains("openid"))
@@ -72,8 +72,8 @@ public class OidcDriver extends Oauth2Driver {
         }
 
         OIDCTokenResponse successResponse = (OIDCTokenResponse) tokenResponse.toSuccessResponse();
-        OIDCTokens oidcTokens = successResponse.getOIDCTokens();
-        return oidcTokens;
+
+        return successResponse.getOIDCTokens();
     }
 
     @Override

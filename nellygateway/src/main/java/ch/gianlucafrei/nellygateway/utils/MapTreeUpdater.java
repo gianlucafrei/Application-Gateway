@@ -2,10 +2,12 @@ package ch.gianlucafrei.nellygateway.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.experimental.UtilityClass;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@UtilityClass
 public class MapTreeUpdater {
 
     public static Map<String, Object> updateMap(Object original, Object update) {

@@ -1,36 +1,18 @@
 package ch.gianlucafrei.nellygateway.services.login.drivers;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashMap;
 
+@Getter @Setter
 public class UserModel {
 
     private String id;
-    private HashMap<String, String> mappings;
-
-    public UserModel() {
-
-        this.mappings = new HashMap<>();
-    }
+    private HashMap<String, String> mappings = new HashMap<>();
 
     public UserModel(String id) {
         this.id = id;
-        this.mappings = new HashMap<>();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public HashMap<String, String> getMappings() {
-        return mappings;
-    }
-
-    public void setMappings(HashMap<String, String> mappings) {
-        this.mappings = mappings;
     }
 
     public void set(String key, String value) {

@@ -3,42 +3,21 @@ package ch.gianlucafrei.nellygateway.config.configuration;
 import ch.gianlucafrei.nellygateway.config.ErrorValidation;
 import ch.gianlucafrei.nellygateway.services.login.drivers.InvalidProviderSettingsException;
 import ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriver;
-import ch.gianlucafrei.nellygateway.services.login.drivers.oidc.LoginDriverLoader;
+import ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriverLoader;
+import lombok.*;
 import org.springframework.context.ApplicationContext;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginProvider implements ErrorValidation {
 
     private String type;
     private LoginProviderSettings with;
-
-    public LoginProvider() {
-    }
-
-    public LoginProvider(String type, LoginProviderSettings with) {
-        this.type = type;
-        this.with = with;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public LoginProviderSettings getWith() {
-        return with;
-    }
-
-    public void setWith(LoginProviderSettings with) {
-        this.with = with;
-    }
-
 
     @Override
     public List<String> getErrors(ApplicationContext context) {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,13 +21,11 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Slf4j
 public class FileConfigLoader implements NellyConfigLoader {
-
-    private static final Logger log = LoggerFactory.getLogger(FileConfigLoader.class);
 
     @Value("${nelly.configPath}")
     private String configPath;
-
 
     @Override
     public NellyConfig loadConfiguration() throws IOException {
@@ -63,8 +62,7 @@ public class FileConfigLoader implements NellyConfigLoader {
         // Combine default and user config
         Map<String, Object> combinedConfig = MapTreeUpdater.updateMap(defaultConfigMap, userConfigMap);
         String combinedConfigStr = om.writeValueAsString(combinedConfig);
-        NellyConfig finalConfig = om.readValue(combinedConfigStr, NellyConfig.class);
 
-        return finalConfig;
+        return om.readValue(combinedConfigStr, NellyConfig.class);
     }
 }

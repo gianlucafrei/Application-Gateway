@@ -12,6 +12,7 @@ import com.nimbusds.oauth2.sdk.auth.ClientAuthentication;
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.nimbusds.oauth2.sdk.token.RefreshToken;
 import com.nimbusds.oauth2.sdk.token.Tokens;
+import org.springframework.http.MediaType;
 
 import java.io.IOException;
 import java.net.URI;
@@ -83,15 +84,13 @@ public class GitHubDriver extends Oauth2Driver {
             GitHubEmailsResponse emailsResponse = makeGitHubApiRequest("https://api.github.com/user/emails", accessToken.getValue(), GitHubEmailsResponse.class);
 
             Optional<GitHubUserEmail> anyEmail = emailsResponse.stream()
-                    .filter(e -> e.isVerified())
-                    .filter(e -> e.isPrimary())
+                    .filter(GitHubUserEmail::isVerified)
+                    .filter(GitHubUserEmail::isPrimary)
                     .findAny();
 
 
-            if (anyEmail.isPresent())
-                return anyEmail.get().getEmail();
-            else
-                return null;
+            return anyEmail.map(GitHubUserEmail::getEmail)
+                    .orElse(null);
 
         } catch (Exception e) {
             throw new RuntimeException("Could not load user profile info", e);
@@ -103,7 +102,7 @@ public class GitHubDriver extends Oauth2Driver {
         var client = HttpClient.newHttpClient();
         var request = HttpRequest.newBuilder(
                 URI.create(endpoint))
-                .header("accept", "application/json")
+                .header("accept", MediaType.APPLICATION_JSON_VALUE)
                 .headers("Authorization", "token " + accessToken)
                 .build();
 

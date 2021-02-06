@@ -1,22 +1,23 @@
-package ch.gianlucafrei.nellygateway.services.login.drivers.oidc;
+package ch.gianlucafrei.nellygateway.services.login.drivers;
 
 import ch.gianlucafrei.nellygateway.config.configuration.LoginProviderSettings;
 import ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriver;
 import ch.gianlucafrei.nellygateway.services.login.drivers.github.GitHubDriver;
-import org.springframework.beans.factory.annotation.Autowired;
+import ch.gianlucafrei.nellygateway.services.login.drivers.oidc.OidcDriver;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
 
+import static ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriverTypes.GITHUB;
+import static ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriverTypes.OIDC;
+
 @Component
+@RequiredArgsConstructor
 public class LoginDriverLoader {
 
-    private ApplicationContext context;
-
-    public LoginDriverLoader(@Autowired ApplicationContext context) {
-        this.context = context;
-    }
+    private final ApplicationContext context;
 
     public LoginDriver loadDriverByKey(String driverName, URI callbackURI, LoginProviderSettings settings) {
 

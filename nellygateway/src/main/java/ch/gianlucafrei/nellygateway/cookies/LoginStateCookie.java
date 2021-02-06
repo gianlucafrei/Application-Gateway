@@ -1,5 +1,13 @@
 package ch.gianlucafrei.nellygateway.cookies;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginStateCookie {
 
     public static final String NAME = "state";
@@ -8,36 +16,4 @@ public class LoginStateCookie {
     private String state;
     private String returnUrl;
 
-    public LoginStateCookie() {
-    }
-
-    public LoginStateCookie(String provider, String state, String returnUrl) {
-        this.provider = provider;
-        this.state = state;
-        this.returnUrl = returnUrl;
-    }
-
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getReturnUrl() {
-        return returnUrl;
-    }
-
-    public void setReturnUrl(String returnUrl) {
-        this.returnUrl = returnUrl;
-    }
 }

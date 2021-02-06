@@ -1,9 +1,13 @@
 package ch.gianlucafrei.nellygateway.services.login.drivers;
 
 import ch.gianlucafrei.nellygateway.config.configuration.LoginProviderSettings;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
+import java.util.List;
 
+@Getter
 public abstract class LoginDriverBase implements LoginDriver {
 
 
@@ -13,20 +17,11 @@ public abstract class LoginDriverBase implements LoginDriver {
     public LoginDriverBase(LoginProviderSettings settings, URI callbackURI) {
         this.callbackURI = callbackURI;
 
-        var errors = getSettingsErrors(settings);
+        List<String> errors = getSettingsErrors(settings);
         if (errors.isEmpty()) {
             this.settings = settings;
         } else {
             throw new InvalidProviderSettingsException(errors);
         }
-    }
-
-    public LoginProviderSettings getSettings() {
-        return settings;
-    }
-
-    public URI getCallbackUri() {
-
-        return callbackURI;
     }
 }

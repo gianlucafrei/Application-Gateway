@@ -5,6 +5,7 @@ import ch.gianlucafrei.nellygateway.filters.spring.ExtractAuthenticationFilter;
 import ch.gianlucafrei.nellygateway.session.Session;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +14,10 @@ import java.util.HashMap;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class AuthenticationHeadersFilter extends ZuulFilter {
 
-    @Autowired
-    private NellyConfig nellyConfig;
+    private final NellyConfig nellyConfig;
 
     @Override
     public String filterType() {

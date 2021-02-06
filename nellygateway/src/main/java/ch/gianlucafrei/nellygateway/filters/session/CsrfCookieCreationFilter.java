@@ -5,7 +5,7 @@ import ch.gianlucafrei.nellygateway.cookies.CsrfCookie;
 import ch.gianlucafrei.nellygateway.cookies.LoginCookie;
 import ch.gianlucafrei.nellygateway.session.Session;
 import ch.gianlucafrei.nellygateway.utils.CookieUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;
@@ -14,10 +14,10 @@ import java.util.Map;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class CsrfCookieCreationFilter implements NellySessionFilter {
 
-    @Autowired
-    NellyConfig config;
+    private final NellyConfig config;
 
     @Override
     public void renewSession(Map<String, Object> filterContext, HttpServletResponse response) {
@@ -27,7 +27,7 @@ public class CsrfCookieCreationFilter implements NellySessionFilter {
     }
 
     @Override
-    public int order() {
+    public int filterPriority() {
         return 1;
     }
 

@@ -1,9 +1,12 @@
 package ch.gianlucafrei.nellygateway.utils;
 
+import lombok.experimental.UtilityClass;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+@UtilityClass
 public class UrlUtils {
 
     public static boolean isValidReturnUrl(String returnUrl, String[] allowedHosts) {

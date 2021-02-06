@@ -4,6 +4,8 @@ import ch.gianlucafrei.nellygateway.config.configuration.NellyConfig;
 import ch.gianlucafrei.nellygateway.filters.session.NellySessionFilter;
 import ch.gianlucafrei.nellygateway.services.crypto.CookieEncryptor;
 import ch.gianlucafrei.nellygateway.session.Session;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +20,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
 
+@Slf4j
 @Order(4)
 @Component
+@RequiredArgsConstructor
 public class SessionRenewalFilter implements Filter {
 
-    private static final Logger log = LoggerFactory.getLogger(SessionRenewalFilter.class);
-
-    @Autowired
-    CookieEncryptor cookieEncryptor;
-
-    @Autowired
-    NellyConfig config;
-
-    @Autowired
-    ApplicationContext applicationContext;
+    private final CookieEncryptor cookieEncryptor;
+    private final NellyConfig config;
+    private final ApplicationContext applicationContext;
 
     @Override
     public void doFilter(

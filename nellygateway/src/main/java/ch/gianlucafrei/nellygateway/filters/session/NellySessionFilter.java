@@ -21,7 +21,7 @@ public interface NellySessionFilter {
         var filters = context.getBeansOfType(NellySessionFilter.class);
 
         List<NellySessionFilter> sessionFilters = filters.values().stream()
-                .sorted(Comparator.comparingInt(NellySessionFilter::order))
+                .sorted(Comparator.comparingInt(NellySessionFilter::filterPriority))
                 .collect(Collectors.toList());
 
         return sessionFilters;
@@ -29,7 +29,7 @@ public interface NellySessionFilter {
 
     void renewSession(Map<String, Object> filterContext, HttpServletResponse response);
 
-    int order();
+    int filterPriority();
 
     void createSession(Map<String, Object> filterContext, HttpServletResponse response);
 

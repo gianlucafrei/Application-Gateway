@@ -1,7 +1,14 @@
 package ch.gianlucafrei.nellygateway.cookies;
 
 import ch.gianlucafrei.nellygateway.services.login.drivers.UserModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginCookie {
 
     public static final String NAME = "session";
@@ -12,44 +19,4 @@ public class LoginCookie {
     private UserModel userModel;
     private String csrfToken;
 
-    public LoginCookie() {
-    }
-
-    public LoginCookie(int sessionExpSeconds, String provider, UserModel userModel) {
-        this.sessionExpSeconds = sessionExpSeconds;
-        this.providerKey = provider;
-        this.userModel = userModel;
-    }
-
-    public long getSessionExpSeconds() {
-        return sessionExpSeconds;
-    }
-
-    public void setSessionExpSeconds(int sessionExpSeconds) {
-        this.sessionExpSeconds = sessionExpSeconds;
-    }
-
-    public String getProviderKey() {
-        return providerKey;
-    }
-
-    public void setProviderKey(String providerKey) {
-        this.providerKey = providerKey;
-    }
-
-    public UserModel getUserModel() {
-        return userModel;
-    }
-
-    public void setUserModel(UserModel userModel) {
-        this.userModel = userModel;
-    }
-
-    public String getCsrfToken() {
-        return csrfToken;
-    }
-
-    public void setCsrfToken(String csrfToken) {
-        this.csrfToken = csrfToken;
-    }
 }

@@ -16,6 +16,7 @@ import com.nimbusds.oauth2.sdk.id.State;
 import com.nimbusds.oauth2.sdk.token.Tokens;
 import com.nimbusds.openid.connect.sdk.OIDCTokenResponseParser;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,11 +37,11 @@ public abstract class Oauth2Driver extends LoginDriverBase {
 
         var settings = getSettings();
 
-        // Preprare Oauth2 request
-        URI authzEndpoint = getAuthEndpoint(settings);
+        // Prepare Oauth2 request
+        URI authEndpoint = getAuthEndpoint(settings);
         ClientID clientID = getClientId(settings);
         Scope scope = getScopes(settings);
-        URI callback = getCallbackUri();
+        URI callback = getCallbackURI();
 
         // Generate random state string for pairing the response to the request
         State state = new State();
@@ -51,7 +52,7 @@ public abstract class Oauth2Driver extends LoginDriverBase {
                 .scope(scope)
                 .state(state)
                 .redirectionURI(callback)
-                .endpointURI(authzEndpoint)
+                .endpointURI(authEndpoint)
                 .build();
 
         // Use this URI to send the end-user's browser to the server
@@ -97,7 +98,7 @@ public abstract class Oauth2Driver extends LoginDriverBase {
     @Override
     public UserModel processCallback(HttpServletRequest request, String stateFromLoginStep) throws AuthenticationException {
 
-        var settings = getSettings();
+        LoginProviderSettings settings = getSettings();
 
         String authCode = request.getParameter("code");
         if (authCode == null)
@@ -117,7 +118,7 @@ public abstract class Oauth2Driver extends LoginDriverBase {
                 getClientSecret(settings));
 
         URI tokenEndpoint = getTokenEndpoint(settings);
-        AuthorizationGrant codeGrant = new AuthorizationCodeGrant(code, getCallbackUri());
+        AuthorizationGrant codeGrant = new AuthorizationCodeGrant(code, getCallbackURI());
 
         Tokens tokens = loadTokens(clientAuth, tokenEndpoint, codeGrant);
 
@@ -179,8 +180,7 @@ public abstract class Oauth2Driver extends LoginDriverBase {
             throw new AuthenticationException(message);
         }
 
-        var tokens = tokenResponse.toSuccessResponse().getTokens();
-        return tokens;
+        return tokenResponse.toSuccessResponse().getTokens();
     }
 
     protected abstract UserModel loadUserInfo(Tokens accessToken);
@@ -190,7 +190,7 @@ public abstract class Oauth2Driver extends LoginDriverBase {
         TokenResponse tokenResponse;
         try {
             HTTPRequest tokenHttpRequest = tokenRequest.toHTTPRequest();
-            tokenHttpRequest.setAccept("application/json");
+            tokenHttpRequest.setAccept(MediaType.APPLICATION_JSON_VALUE);
             HTTPResponse tokenHttpResponse = tokenHttpRequest.send();
             tokenResponse = OIDCTokenResponseParser.parse(tokenHttpResponse);
         } catch (IOException e) {

@@ -6,6 +6,8 @@ import ch.gianlucafrei.nellygateway.config.configuration.SecurityProfile;
 import ch.gianlucafrei.nellygateway.services.csrf.CsrfProtectionValidation;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +18,13 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class CsrfValidationFilter extends ZuulFilter {
 
-    private static final Logger log = LoggerFactory.getLogger(CsrfValidationFilter.class);
-
-    @Autowired
-    private NellyConfig config;
-
-    @Autowired
-    private ApplicationContext context;
+    private final NellyConfig config;
+    private final ApplicationContext context;
 
     @Override
     public String filterType() {

@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+@Slf4j
 public class StringEnvironmentVariableDeserializer extends StdScalarDeserializer<String> {
-
-    private static final Logger log = LoggerFactory.getLogger(StringEnvironmentVariableDeserializer.class);
 
     public StringEnvironmentVariableDeserializer() {
         super(String.class);

@@ -27,7 +27,7 @@ class GitHubDriverTest {
         assertEquals(req1.getState().toString(), loginDriverResult1.getState());
         assertEquals(req1.getClientID().toString(), settings.get("clientId"));
         assertTrue(req1.getScope().contains("email"));
-        assertEquals(req1.getRedirectionURI(), driver.getCallbackUri());
+        assertEquals(req1.getRedirectionURI(), driver.getCallbackURI());
 
         // Check if the login states are not the same
         assertNotEquals(loginDriverResult1.getState(), loginDriverResult2.getState(), "State variables must not be equal");

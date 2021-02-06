@@ -11,16 +11,12 @@ import ch.gianlucafrei.nellygateway.services.crypto.CookieDecryptionException;
 import ch.gianlucafrei.nellygateway.services.crypto.CookieEncryptor;
 import ch.gianlucafrei.nellygateway.services.csrf.CsrfProtectionValidation;
 import ch.gianlucafrei.nellygateway.services.csrf.CsrfSamesiteStrictValidation;
-import ch.gianlucafrei.nellygateway.services.login.drivers.AuthenticationException;
-import ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriver;
-import ch.gianlucafrei.nellygateway.services.login.drivers.LoginDriverResult;
-import ch.gianlucafrei.nellygateway.services.login.drivers.UserModel;
-import ch.gianlucafrei.nellygateway.services.login.drivers.oidc.LoginDriverLoader;
+import ch.gianlucafrei.nellygateway.services.login.drivers.*;
 import ch.gianlucafrei.nellygateway.session.Session;
 import ch.gianlucafrei.nellygateway.utils.CookieUtils;
 import ch.gianlucafrei.nellygateway.utils.UrlUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -40,25 +36,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class LoginController {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-    @Autowired
-    ApplicationContext context;
-    @Autowired
-    private CookieEncryptor cookieEncryptor;
-    @Autowired
-    private NellyConfig config;
-    @Autowired
-    private LoginDriverLoader loginDriverLoader;
+    private final ApplicationContext context;
+    private final CookieEncryptor cookieEncryptor;
+    private final NellyConfig config;
+    private final LoginDriverLoader loginDriverLoader;
 
     @GetMapping("session")
-    public SessionInformation sessionInfo(
-            HttpServletResponse response,
-            HttpServletRequest request
-    ) {
+    public SessionInformation sessionInfo(HttpServletRequest request) {
         SessionInformation sessionInformation;
         Optional<Session> sessionOptional = (Optional<Session>) request.getAttribute(ExtractAuthenticationFilter.NELLY_SESSION);
 
@@ -139,7 +129,7 @@ public class LoginController {
 
     private LoginProvider loadProvider(String providerKey) {
 
-        var provider = config.getLoginProviders().get(providerKey);
+        LoginProvider provider = config.getLoginProviders().get(providerKey);
 
         if (provider == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Provider not found");
@@ -175,7 +165,7 @@ public class LoginController {
         LoginDriver loginDriver = loadLoginDriver(providerKey);
 
         // Load login state
-        var loginState = loadLoginState(request);
+        LoginStateCookie loginState = loadLoginState(request);
 
         try {
 

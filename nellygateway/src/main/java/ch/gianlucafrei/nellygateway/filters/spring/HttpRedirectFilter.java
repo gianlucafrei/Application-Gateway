@@ -1,6 +1,8 @@
 package ch.gianlucafrei.nellygateway.filters.spring;
 
 import ch.gianlucafrei.nellygateway.config.configuration.NellyConfig;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // TODO add flag to ignore this filter
+@Slf4j
 @Order(2)
 @Component
+@RequiredArgsConstructor
 public class HttpRedirectFilter implements Filter {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpRedirectFilter.class);
-
-    @Autowired
-    private NellyConfig config;
+    private final NellyConfig config;
 
     @Override
     public void doFilter(

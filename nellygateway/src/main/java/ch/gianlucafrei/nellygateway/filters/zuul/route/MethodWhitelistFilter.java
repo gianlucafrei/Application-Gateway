@@ -5,6 +5,9 @@ import ch.gianlucafrei.nellygateway.config.configuration.NellyRoute;
 import ch.gianlucafrei.nellygateway.config.configuration.SecurityProfile;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class MethodWhitelistFilter extends ZuulFilter {
 
-    private static final Logger log = LoggerFactory.getLogger(MethodWhitelistFilter.class);
-
-    @Autowired
-    private NellyConfig config;
+    private final NellyConfig config;
 
     @Override
     public String filterType() {

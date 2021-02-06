@@ -7,6 +7,7 @@ import ch.gianlucafrei.nellygateway.services.crypto.CookieEncryptor;
 import ch.gianlucafrei.nellygateway.services.login.drivers.UserModel;
 import ch.gianlucafrei.nellygateway.session.Session;
 import ch.gianlucafrei.nellygateway.utils.CookieUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class SessionCookieCreationFilter implements NellySessionFilter {
 
-    @Autowired
-    private CookieEncryptor cookieEncryptor;
-
-    @Autowired
-    private NellyConfig config;
-
-    @Autowired
-    private GlobalClockSource globalClockSource;
+    private final CookieEncryptor cookieEncryptor;
+    private final NellyConfig config;
+    private final GlobalClockSource globalClockSource;
 
     @Override
     public void renewSession(Map<String, Object> filterContext, HttpServletResponse response) {
@@ -38,7 +35,7 @@ public class SessionCookieCreationFilter implements NellySessionFilter {
     }
 
     @Override
-    public int order() {
+    public int filterPriority() {
         return 2;
     }
 
@@ -51,14 +48,14 @@ public class SessionCookieCreationFilter implements NellySessionFilter {
         int currentTimeSeconds = (int) (globalClockSource.getGlobalClock().millis() / 1000);
         int sessionDuration = config.getSessionBehaviour().getSessionDuration();
         int sessionExp = currentTimeSeconds + sessionDuration;
-
-        LoginCookie loginCookie = new LoginCookie(sessionExp, providerKey, model);
+        String csrfToken = null;
 
         // Bind csrf token to encrypted login cookie
         if (filterContext.containsKey("csrfToken")) {
-            var csrfToken = (String) filterContext.get("csrfToken");
-            loginCookie.setCsrfToken(csrfToken);
+            csrfToken = (String) filterContext.get("csrfToken");
         }
+
+        LoginCookie loginCookie = new LoginCookie(sessionExp, providerKey, model, csrfToken);
 
         String encryptedLoginCookie = cookieEncryptor.encryptObject(loginCookie);
 

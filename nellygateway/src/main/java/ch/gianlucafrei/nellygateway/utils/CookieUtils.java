@@ -1,9 +1,12 @@
 package ch.gianlucafrei.nellygateway.utils;
 
+import lombok.experimental.UtilityClass;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@UtilityClass
 public class CookieUtils {
 
     public static Cookie getCookieOrNull(String name, HttpServletRequest request) {

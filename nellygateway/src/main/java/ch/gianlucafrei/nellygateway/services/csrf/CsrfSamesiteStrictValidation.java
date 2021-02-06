@@ -26,8 +26,7 @@ public class CsrfSamesiteStrictValidation implements CsrfProtectionValidation {
             if (csrfValueFromCookie == null)
                 return true;
 
-            if (!csrfValueFromCookie.equals(csrfValueFromSession))
-                return true;
+            return !csrfValueFromCookie.equals(csrfValueFromSession);
         }
 
         return false;

@@ -6,6 +6,7 @@ import ch.gianlucafrei.nellygateway.config.configuration.SecurityProfile;
 import com.netflix.util.Pair;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,10 +16,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class ResponseHeaderFilter extends ZuulFilter {
 
-    @Autowired
-    private NellyConfig config;
+    private final NellyConfig config;
 
     @Override
     public String filterType() {

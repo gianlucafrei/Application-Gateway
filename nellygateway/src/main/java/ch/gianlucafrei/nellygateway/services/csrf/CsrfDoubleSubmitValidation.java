@@ -27,8 +27,7 @@ public class CsrfDoubleSubmitValidation implements CsrfProtectionValidation {
             if (csrfValueFromDoubleSubmit == null)
                 return true;
 
-            if (!csrfValueFromDoubleSubmit.equals(csrfValueFromSession))
-                return true;
+            return !csrfValueFromDoubleSubmit.equals(csrfValueFromSession);
         }
 
         return false;
@@ -42,7 +41,6 @@ public class CsrfDoubleSubmitValidation implements CsrfProtectionValidation {
             return csrfTokenFromHeader;
 
         // Return token from parameter or null if not present
-        String csrfFromParam = request.getParameter(CSRF_TOKEN_PARAMETER_NAME);
-        return csrfFromParam;
+        return request.getParameter(CSRF_TOKEN_PARAMETER_NAME);
     }
 }

@@ -1,11 +1,15 @@
 package ch.gianlucafrei.nellygateway.config.configuration;
 
 import ch.gianlucafrei.nellygateway.config.ErrorValidation;
+import lombok.*;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.context.ApplicationContext;
 
 import java.util.*;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NellyConfig implements ErrorValidation {
 
     private Map<String, LoginProvider> loginProviders;
@@ -15,19 +19,6 @@ public class NellyConfig implements ErrorValidation {
     private String nellyApiKey;
     private List<String> trustedRedirectHosts;
     private SessionBehaviour sessionBehaviour;
-
-    public NellyConfig() {
-    }
-
-    public NellyConfig(Map<String, LoginProvider> loginProviders, Map<String, NellyRoute> routes, Map<String, SecurityProfile> securityProfiles, String hostUri, String nellyApiKey, List<String> trustedRedirectHosts, SessionBehaviour sessionBehaviour) {
-        this.loginProviders = loginProviders;
-        this.routes = routes;
-        this.securityProfiles = securityProfiles;
-        this.hostUri = hostUri;
-        this.nellyApiKey = nellyApiKey;
-        this.trustedRedirectHosts = trustedRedirectHosts;
-        this.sessionBehaviour = sessionBehaviour;
-    }
 
     public Map<String, ZuulProperties.ZuulRoute> getRoutesAsZuulRoutes() {
 
@@ -45,68 +36,12 @@ public class NellyConfig implements ErrorValidation {
         return zuulRoutes;
     }
 
-    public Map<String, NellyRoute> getRoutes() {
-        return routes;
-    }
-
-    private void setRoutes(Map<String, NellyRoute> routes) {
-        this.routes = routes;
-    }
-
     public boolean isHttpsHost() {
 
         if (hostUri == null)
             return false;
 
         return getHostUri().startsWith("https://");
-    }
-
-    public String getHostUri() {
-        return hostUri;
-    }
-
-    private void setHostUri(String hostUri) {
-        this.hostUri = hostUri;
-    }
-
-    public Map<String, LoginProvider> getLoginProviders() {
-        return loginProviders;
-    }
-
-    private void setLoginProviders(Map<String, LoginProvider> loginProviders) {
-        this.loginProviders = loginProviders;
-    }
-
-    public Map<String, SecurityProfile> getSecurityProfiles() {
-        return securityProfiles;
-    }
-
-    private void setSecurityProfiles(Map<String, SecurityProfile> securityProfiles) {
-        this.securityProfiles = securityProfiles;
-    }
-
-    public String getNellyApiKey() {
-        return nellyApiKey;
-    }
-
-    private void setNellyApiKey(String nellyApiKey) {
-        this.nellyApiKey = nellyApiKey;
-    }
-
-    public List<String> getTrustedRedirectHosts() {
-        return trustedRedirectHosts;
-    }
-
-    private void setTrustedRedirectHosts(List<String> trustedRedirectHosts) {
-        this.trustedRedirectHosts = trustedRedirectHosts;
-    }
-
-    public SessionBehaviour getSessionBehaviour() {
-        return sessionBehaviour;
-    }
-
-    private void setSessionBehaviour(SessionBehaviour sessionBehaviour) {
-        this.sessionBehaviour = sessionBehaviour;
     }
 
     @Override

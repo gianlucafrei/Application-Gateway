@@ -1,11 +1,18 @@
 package ch.gianlucafrei.nellygateway.config.configuration;
 
 import ch.gianlucafrei.nellygateway.config.ErrorValidation;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SessionBehaviour implements ErrorValidation {
 
     private int sessionDuration;
@@ -13,57 +20,6 @@ public class SessionBehaviour implements ErrorValidation {
     private String redirectLoginSuccess;
     private String redirectLoginFailure;
     private String redirectLogout;
-
-    public SessionBehaviour() {
-    }
-
-    public SessionBehaviour(int sessionDuration, int renewWhenLessThan, String redirectLoginSuccess, String redirectLoginFailure, String redirectLogout) {
-        this.sessionDuration = sessionDuration;
-        this.renewWhenLessThan = renewWhenLessThan;
-        this.redirectLoginSuccess = redirectLoginSuccess;
-        this.redirectLoginFailure = redirectLoginFailure;
-        this.redirectLogout = redirectLogout;
-    }
-
-    public int getSessionDuration() {
-        return sessionDuration;
-    }
-
-    private void setSessionDuration(int sessionDuration) {
-        this.sessionDuration = sessionDuration;
-    }
-
-    public String getRedirectLoginSuccess() {
-        return redirectLoginSuccess;
-    }
-
-    private void setRedirectLoginSuccess(String redirectLoginSuccess) {
-        this.redirectLoginSuccess = redirectLoginSuccess;
-    }
-
-    public String getRedirectLoginFailure() {
-        return redirectLoginFailure;
-    }
-
-    private void setRedirectLoginFailure(String redirectLoginFailure) {
-        this.redirectLoginFailure = redirectLoginFailure;
-    }
-
-    public String getRedirectLogout() {
-        return redirectLogout;
-    }
-
-    private void setRedirectLogout(String redirectLogout) {
-        this.redirectLogout = redirectLogout;
-    }
-
-    public int getRenewWhenLessThan() {
-        return renewWhenLessThan;
-    }
-
-    private void setRenewWhenLessThan(int renewWhenLessThan) {
-        this.renewWhenLessThan = renewWhenLessThan;
-    }
 
     @Override
     public List<String> getErrors(ApplicationContext context) {

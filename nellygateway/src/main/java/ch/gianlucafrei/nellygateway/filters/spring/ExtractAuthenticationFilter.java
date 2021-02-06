@@ -6,6 +6,8 @@ import ch.gianlucafrei.nellygateway.services.crypto.CookieDecryptionException;
 import ch.gianlucafrei.nellygateway.services.crypto.CookieEncryptor;
 import ch.gianlucafrei.nellygateway.session.Session;
 import ch.gianlucafrei.nellygateway.utils.CookieUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,20 +20,17 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
+@Slf4j
 @Order(3)
 @Component
+@RequiredArgsConstructor
 public class ExtractAuthenticationFilter implements Filter {
 
     public final static String NELLY_SESSION = "nelly-session"; // Key for request context
     public final static String NELLY_SESSION_CSRF_TOKEN = "session-csrf-token";
 
-    private static final Logger log = LoggerFactory.getLogger(ExtractAuthenticationFilter.class);
-
-    @Autowired
-    CookieEncryptor cookieEncryptor;
-
-    @Autowired
-    GlobalClockSource globalClockSource;
+    private final CookieEncryptor cookieEncryptor;
+    private final GlobalClockSource globalClockSource;
 
     @Override
     public void doFilter(
